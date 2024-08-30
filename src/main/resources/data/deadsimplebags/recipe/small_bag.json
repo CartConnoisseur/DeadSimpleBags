@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "deadsimplebags:bags",
+  "pattern": [
+    "MMM",
+    "CBC",
+    "MMM"
+  ],
+  "key": {
+    "M": { "item":  "minecraft:copper_ingot" },
+    "C": { "item":  "minecraft:chest" },
+    "B": { "item":  "deadsimplebags:tiny_bag" }
+  },
+  "result": { "id": "deadsimplebags:small_bag" }
+}

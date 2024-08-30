@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "deadsimplebags:bags",
+  "pattern": [
+    "MMM",
+    "CBC",
+    "MMM"
+  ],
+  "key": {
+    "M": { "item":  "minecraft:diamond" },
+    "C": { "item":  "minecraft:chest" },
+    "B": { "item":  "deadsimplebags:large_bag" }
+  },
+  "result": { "id": "deadsimplebags:huge_bag" }
+}

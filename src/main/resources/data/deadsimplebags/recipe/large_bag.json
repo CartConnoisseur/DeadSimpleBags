@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "deadsimplebags:bags",
+  "pattern": [
+    "MMM",
+    "CBC",
+    "MMM"
+  ],
+  "key": {
+    "M": { "item":  "minecraft:gold_ingot" },
+    "C": { "item":  "minecraft:chest" },
+    "B": { "item":  "deadsimplebags:medium_bag" }
+  },
+  "result": { "id": "deadsimplebags:large_bag" }
+}
