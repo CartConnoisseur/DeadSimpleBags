@@ -14,6 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.Nullable;
 import sh.cxl.deadsimplebags.component.DeadSimpleBagsComponents;
+import sh.cxl.deadsimplebags.component.PickupMode;
 import sh.cxl.deadsimplebags.screen.ItemInventoryScreenHandler;
 
 public class BagItemInventory implements NamedScreenHandlerFactory, Inventory {
@@ -111,9 +112,71 @@ public class BagItemInventory implements NamedScreenHandlerFactory, Inventory {
 
     @Override
     public void onClose(PlayerEntity player) {
-        stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(items));
-        stack.set(DeadSimpleBagsComponents.OPEN, false);
         root.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(items));
         root.set(DeadSimpleBagsComponents.OPEN, false);
+    }
+
+    private boolean canStackAddMore(ItemStack existingStack, ItemStack stack) {
+        return !existingStack.isEmpty() && ItemStack.areItemsAndComponentsEqual(existingStack, stack) && stack.isStackable() && existingStack.isStackable() && existingStack.getCount() < this.getMaxCount(existingStack);
+    }
+
+    public int getSlotWithRoomForStack(ItemStack stack) {
+        for (int slot = 0; slot < this.items.size(); slot++) {
+            if (this.canStackAddMore(this.items.get(slot), stack) || this.items.get(slot).isEmpty()) {
+                return slot;
+            }
+        }
+
+        return -1;
+    }
+
+    private int addStack(ItemStack stack) {
+        int slot = this.getSlotWithRoomForStack(stack);
+        return slot == -1 ? stack.getCount() : this.addStack(slot, stack);
+    }
+
+    private int addStack(int slot, ItemStack stack) {
+        int count = stack.getCount();
+        ItemStack itemStack = this.getStack(slot);
+        if (itemStack.isEmpty()) {
+            itemStack = stack.copyWithCount(0);
+            this.setStack(slot, itemStack);
+        }
+
+        int free = this.getMaxCount(itemStack) - itemStack.getCount();
+        int amount = Math.min(count, free);
+        if (amount != 0) {
+            itemStack.increment(amount);
+            itemStack.setBobbingAnimationTime(5);
+        }
+
+        return count - amount;
+    }
+
+    public boolean insertStack(PickupMode mode, ItemStack stack) {
+        if (stack.isEmpty()) return false;
+
+        boolean validItem = false;
+        if (mode == PickupMode.EXISTING) {
+            for (ItemStack item : this.items) {
+                if (item.isOf(stack.getItem())) {
+                    validItem = true;
+                    break;
+                }
+            }
+        } else {
+            validItem = true;
+        }
+
+        if (!validItem) return false;
+
+        int count = Integer.MAX_VALUE;
+        while (!stack.isEmpty() && stack.getCount() < count) {
+            count = stack.getCount();
+            stack.setCount(this.addStack(stack));
+        }
+
+        root.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(items));
+        return count == 0;
     }
 }

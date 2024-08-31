@@ -13,4 +13,10 @@ public abstract class DeadSimpleBagsComponents {
             Identifier.of(DeadSimpleBags.MOD_ID, "open"),
             ComponentType.<Boolean>builder().codec(Codec.BOOL).build()
     );
+
+    public static final ComponentType<PickupMode> PICKUP_MODE = Registry.register(
+            Registries.DATA_COMPONENT_TYPE,
+            Identifier.of(DeadSimpleBags.MOD_ID, "pickup_mode"),
+            ComponentType.<PickupMode>builder().codec(PickupMode.CODEC).build()
+    );
 }

@@ -7,13 +7,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import sh.cxl.deadsimplebags.inventory.ItemInventory;
+import sh.cxl.deadsimplebags.inventory.BagItemInventory;
 
 public class ItemInventoryScreenHandler extends ScreenHandler {
-    private final ItemInventory inventory;
+    private final BagItemInventory inventory;
     private final int rows;
 
-    public ItemInventoryScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ItemInventory inventory, int rows) {
+    public ItemInventoryScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, BagItemInventory inventory, int rows) {
         super(type, syncId);
         checkSize(inventory, rows * 9);
         this.inventory = inventory;
@@ -73,7 +73,7 @@ public class ItemInventoryScreenHandler extends ScreenHandler {
         this.inventory.onClose(player);
     }
 
-    public Inventory getInventory() {
+    public BagItemInventory getInventory() {
         return this.inventory;
     }
 

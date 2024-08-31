@@ -11,13 +11,19 @@ import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import sh.cxl.deadsimplebags.inventory.ItemInventory;
+import sh.cxl.deadsimplebags.component.PickupMode;
+import sh.cxl.deadsimplebags.inventory.BagItemInventory;
 import sh.cxl.deadsimplebags.component.DeadSimpleBagsComponents;
+import sh.cxl.deadsimplebags.screen.ItemInventoryScreenHandler;
+
+import java.util.List;
 
 public class BagItem extends Item implements PolymerItem {
     private final int rows;
@@ -27,6 +33,7 @@ public class BagItem extends Item implements PolymerItem {
                 .maxCount(1)
                 .component(DataComponentTypes.CONTAINER, createDefaultContainerComponent(rows))
                 .component(DeadSimpleBagsComponents.OPEN, false)
+                .component(DeadSimpleBagsComponents.PICKUP_MODE, PickupMode.NONE)
         );
         this.rows = rows;
     }
@@ -62,16 +69,41 @@ public class BagItem extends Item implements PolymerItem {
         return polymerStack;
     }
 
+    public BagItemInventory getInventory(PlayerEntity player, ItemStack stack) {
+        if (player.currentScreenHandler instanceof ItemInventoryScreenHandler itemInventoryScreenHandler) {
+            return itemInventoryScreenHandler.getInventory();
+        }
+
+        return new BagItemInventory(stack, this.rows);
+    }
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        ContainerComponent component = stack.get(DataComponentTypes.CONTAINER);
-        if (component == null) component = createDefaultContainerComponent(this.rows);
+        ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
+        if (container == null) container = createDefaultContainerComponent(this.rows);
+        PickupMode pickupMode = stack.get(DeadSimpleBagsComponents.PICKUP_MODE);
+        if (pickupMode == null) pickupMode = PickupMode.NONE;
 
-        stack.set(DeadSimpleBagsComponents.OPEN, true);
-        user.openHandledScreen(new ItemInventory(stack, rows));
+        if (user.isSneaking()) {
+            pickupMode = pickupMode.next();
+            user.sendMessage(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())));
+            stack.set(DeadSimpleBagsComponents.PICKUP_MODE, pickupMode);
+        } else {
+            stack.set(DeadSimpleBagsComponents.OPEN, true);
+            user.openHandledScreen(new BagItemInventory(stack, rows));
+        }
 
         return TypedActionResult.success(stack, false);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        PickupMode pickupMode = stack.get(DeadSimpleBagsComponents.PICKUP_MODE);
+        if (pickupMode == null) pickupMode = PickupMode.NONE;
+
+        tooltip.add(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())).formatted(Formatting.GRAY));
+        tooltip.add(Text.translatable("deadsimplebags.tooltip.cycle_pickup_mode").formatted(Formatting.DARK_GRAY));
     }
 
     @Override

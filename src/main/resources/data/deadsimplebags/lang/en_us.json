@@ -4,5 +4,11 @@
   "item.deadsimplebags.medium_bag": "Medium Bag",
   "item.deadsimplebags.large_bag": "Large Bag",
   "item.deadsimplebags.huge_bag": "Huge Bag",
-  "item.deadsimplebags.massive_bag": "Massive Bag"
+  "item.deadsimplebags.massive_bag": "Massive Bag",
+  "deadsimplebags.pickup_mode": "Pickup mode: %s",
+  "deadsimplebags.pickup_mode.none": "none",
+  "deadsimplebags.pickup_mode.all": "all",
+  "deadsimplebags.pickup_mode.existing": "existing",
+  "deadsimplebags.pickup_mode.overflow": "overflow",
+  "deadsimplebags.tooltip.cycle_pickup_mode": "Sneak + Use to cycle"
 }

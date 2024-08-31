@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "sh.cxl.deadsimplebags.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "PlayerItemPickupMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
