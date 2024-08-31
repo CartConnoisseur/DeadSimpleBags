@@ -16,13 +16,13 @@ import org.jetbrains.annotations.Nullable;
 import sh.cxl.deadsimplebags.component.DeadSimpleBagsComponents;
 import sh.cxl.deadsimplebags.screen.ItemInventoryScreenHandler;
 
-public class ItemInventory implements NamedScreenHandlerFactory, Inventory {
-    private final ItemStack stack;
+public class BagItemInventory implements NamedScreenHandlerFactory, Inventory {
+    private final ItemStack root;
     private final int rows;
     private final DefaultedList<ItemStack> items;
 
-    public ItemInventory(ItemStack stack, int rows) {
-        this.stack = stack;
+    public BagItemInventory(ItemStack stack, int rows) {
+        this.root = stack;
         this.rows = rows;
 
         this.items = DefaultedList.ofSize(rows * 9, ItemStack.EMPTY);
@@ -32,12 +32,12 @@ public class ItemInventory implements NamedScreenHandlerFactory, Inventory {
     }
 
     public ItemStack getRootStack() {
-        return this.stack;
+        return this.root;
     }
 
     @Override
     public Text getDisplayName() {
-        return stack.getName();
+        return root.getName();
     }
 
     @Nullable
@@ -113,5 +113,7 @@ public class ItemInventory implements NamedScreenHandlerFactory, Inventory {
     public void onClose(PlayerEntity player) {
         stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(items));
         stack.set(DeadSimpleBagsComponents.OPEN, false);
+        root.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(items));
+        root.set(DeadSimpleBagsComponents.OPEN, false);
     }
 }
