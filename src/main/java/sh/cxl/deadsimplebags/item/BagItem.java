@@ -9,12 +9,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -22,13 +21,14 @@ import sh.cxl.deadsimplebags.component.PickupMode;
 import sh.cxl.deadsimplebags.inventory.BagItemInventory;
 import sh.cxl.deadsimplebags.component.DeadSimpleBagsComponents;
 import sh.cxl.deadsimplebags.screen.ItemInventoryScreenHandler;
+import xyz.nucleoid.packettweaker.PacketContext;
 
 import java.util.List;
 
 public class BagItem extends Item implements PolymerItem {
     private final int rows;
 
-    public BagItem(int rows, Settings settings) {
+    public BagItem(int rows, net.minecraft.item.Item.Settings settings) {
         super(settings
                 .maxCount(1)
                 .component(DataComponentTypes.CONTAINER, createDefaultContainerComponent(rows))
@@ -39,13 +39,18 @@ public class BagItem extends Item implements PolymerItem {
     }
 
     @Override
-    public Item getPolymerItem(ItemStack itemStack, @Nullable ServerPlayerEntity player) {
+    public Item getPolymerItem(ItemStack stack, PacketContext context) {
         return Items.BUNDLE;
     }
 
     @Override
-    public ItemStack getPolymerItemStack(ItemStack stack, TooltipType tooltipType, RegistryWrapper.WrapperLookup lookup, @Nullable ServerPlayerEntity player) {
-        ItemStack polymerStack = PolymerItem.super.getPolymerItemStack(stack, tooltipType, lookup, player);
+    public @Nullable Identifier getPolymerItemModel(ItemStack stack, PacketContext context) {
+        return Items.BUNDLE.getDefaultStack().get(DataComponentTypes.ITEM_MODEL);
+    }
+
+    @Override
+    public ItemStack getPolymerItemStack(ItemStack stack, TooltipType tooltipType, PacketContext context) {
+        ItemStack polymerStack = PolymerItem.super.getPolymerItemStack(stack, tooltipType, context);
         DefaultedList<ItemStack> stacks = DefaultedList.ofSize(this.rows * 9, ItemStack.EMPTY);
         ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
         boolean open = Boolean.TRUE.equals(stack.get(DeadSimpleBagsComponents.OPEN));
@@ -78,7 +83,7 @@ public class BagItem extends Item implements PolymerItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
         if (container == null) container = createDefaultContainerComponent(this.rows);
@@ -87,14 +92,14 @@ public class BagItem extends Item implements PolymerItem {
 
         if (user.isSneaking()) {
             pickupMode = pickupMode.next();
-            user.sendMessage(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())));
+            user.sendMessage(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())), false);
             stack.set(DeadSimpleBagsComponents.PICKUP_MODE, pickupMode);
         } else {
             stack.set(DeadSimpleBagsComponents.OPEN, true);
             user.openHandledScreen(new BagItemInventory(stack, rows));
         }
 
-        return TypedActionResult.success(stack, false);
+        return ActionResult.SUCCESS;
     }
 
     @Override
