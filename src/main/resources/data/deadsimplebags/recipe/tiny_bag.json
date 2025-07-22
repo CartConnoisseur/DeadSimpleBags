@@ -8,9 +8,9 @@
     "MMM"
   ],
   "key": {
-    "M": { "item":  "minecraft:leather" },
-    "C": { "item":  "minecraft:chest" },
-    "B": { "item":  "minecraft:string" }
+    "M": "minecraft:leather",
+    "C": "minecraft:chest",
+    "B": "minecraft:string"
   },
   "result": { "id": "deadsimplebags:tiny_bag" }
 }
