@@ -11,15 +11,19 @@ import sh.cxl.deadsimplebags.DeadSimpleBags;
 import java.util.function.Function;
 
 public abstract class DeadSimpleBagsItems {
-    public static final Item TINY_BAG = register("tiny_bag", (settings -> new BagItem(1, settings)), new Item.Settings());
-    public static final Item SMALL_BAG = register("small_bag", (settings -> new BagItem(2, settings)), new Item.Settings());
-    public static final Item MEDIUM_BAG = register("medium_bag", (settings -> new BagItem(3, settings)), new Item.Settings());
-    public static final Item LARGE_BAG = register("large_bag", (settings -> new BagItem(4, settings)), new Item.Settings());
-    public static final Item HUGE_BAG = register("huge_bag", (settings -> new BagItem(5, settings)), new Item.Settings());
-    public static final Item MASSIVE_BAG = register("massive_bag", (settings -> new BagItem(6, settings)), new Item.Settings());
+    public static final Item TINY_BAG = registerBagItem("tiny_bag", 1);
+    public static final Item SMALL_BAG = registerBagItem("small_bag", 2);
+    public static final Item MEDIUM_BAG = registerBagItem("medium_bag", 3);
+    public static final Item LARGE_BAG = registerBagItem("large_bag", 4);
+    public static final Item HUGE_BAG = registerBagItem("huge_bag", 5);
+    public static final Item MASSIVE_BAG = registerBagItem("massive_bag", 6);
 
     public static void register() {
         DeadSimpleBags.LOGGER.info("Registering {} items", DeadSimpleBags.MOD_ID);
+    }
+
+    private static Item registerBagItem(String name, int rows) {
+        return register(name, (settings -> new BagItem(rows, settings)), new Item.Settings());
     }
 
     private static Item register(String name, Function<Item.Settings, Item> factory, Item.Settings settings) {
