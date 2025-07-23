@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "deadsimplebags:bags",
+  "pattern": [
+    "MMM",
+    "CBC",
+    "MMM"
+  ],
+  "key": {
+    "M": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "minecraft:leather" /*? if <=1.21.1 {*/ /*} *//*?}*/,
+    "C": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "minecraft:chest" /*? if <=1.21.1 {*/ /*} *//*?}*/,
+    "B": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "minecraft:string", /*? if <=1.21.1 {*/ /*} *//*?}*/
+  },
+  "result": { "id": "deadsimplebags:tiny_bag" }
+}

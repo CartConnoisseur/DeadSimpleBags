@@ -1,4 +1,8 @@
 plugins {
+    id 'org.jetbrains.kotlin.jvm' version '2.2.0'
+    id 'com.google.devtools.ksp' version '2.2.0-2.0.2'
+    id 'dev.kikugie.fletching-table.fabric' version '0.1.0-alpha.13'
+
     id 'fabric-loom' version '1.11-SNAPSHOT'
     id 'maven-publish'
 }
@@ -49,6 +53,12 @@ processResources {
         expand "version": project.version,
                 "minecraft_version": stonecutter.current.project,
                 "loader_version": project.loader_version
+    }
+}
+
+fletchingTable {
+    j52j.register("main") {
+        extension("json", "**/*.json5")
     }
 }
 

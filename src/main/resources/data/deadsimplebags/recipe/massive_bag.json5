@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "minecraft:netherite_upgrade_smithing_template" /*? if <=1.21.1 {*/ /*} *//*?}*/,
+  "base": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "deadsimplebags:huge_bag" /*? if <=1.21.1 {*/ /*} *//*?}*/,
+  "addition": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "minecraft:netherite_ingot" /*? if <=1.21.1 {*/ /*} *//*?}*/,
+  "result": { "id": "deadsimplebags:massive_bag" }
+}

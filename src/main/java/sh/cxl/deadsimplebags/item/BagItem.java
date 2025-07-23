@@ -5,20 +5,22 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.component.type.ContainerComponent;
 //? if >=1.21.5
-import net.minecraft.component.type.TooltipDisplayComponent;
+/*import net.minecraft.component.type.TooltipDisplayComponent;*/
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
+//? if =1.21.1
+/*import net.minecraft.registry.RegistryWrapper;*/
+//? if =1.21.1
+/*import net.minecraft.server.network.ServerPlayerEntity;*/
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.*;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+//? if =1.21.1 || >=1.21.5
+/*import org.jetbrains.annotations.Nullable;*/
 import sh.cxl.deadsimplebags.component.PickupMode;
 import sh.cxl.deadsimplebags.inventory.BagItemInventory;
 import sh.cxl.deadsimplebags.component.DeadSimpleBagsComponents;
@@ -26,7 +28,8 @@ import sh.cxl.deadsimplebags.screen.ItemInventoryScreenHandler;
 import xyz.nucleoid.packettweaker.PacketContext;
 
 import java.util.List;
-import java.util.function.Consumer;
+//? if >=1.21.5
+/*import java.util.function.Consumer;*/
 
 public class BagItem extends Item implements PolymerItem {
     private final int rows;
@@ -42,18 +45,25 @@ public class BagItem extends Item implements PolymerItem {
     }
 
     @Override
-    public Item getPolymerItem(ItemStack stack, PacketContext context) {
+    public Item getPolymerItem(ItemStack stack, /*? =1.21.1 {*/ /*@Nullable ServerPlayerEntity serverPlayerEntity *//*?} else {*/ PacketContext context /*?}*/) {
         return Items.BUNDLE;
     }
 
-    @Override
+    //? if >=1.21.5 {
+    /*@Override
     public @Nullable Identifier getPolymerItemModel(ItemStack stack, PacketContext context) {
         return Items.BUNDLE.getDefaultStack().get(DataComponentTypes.ITEM_MODEL);
     }
+    *///?}
 
     @Override
+    //? if =1.21.1 {
+    /*public ItemStack getPolymerItemStack(ItemStack stack, TooltipType tooltipType, RegistryWrapper.WrapperLookup lookup, @Nullable ServerPlayerEntity player) {
+        ItemStack polymerStack = PolymerItem.super.getPolymerItemStack(stack, tooltipType, lookup, player);
+    *///?} else {
     public ItemStack getPolymerItemStack(ItemStack stack, TooltipType tooltipType, PacketContext context) {
         ItemStack polymerStack = PolymerItem.super.getPolymerItemStack(stack, tooltipType, context);
+    //?}
         DefaultedList<ItemStack> stacks = DefaultedList.ofSize(this.rows * 9, ItemStack.EMPTY);
         ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
         boolean open = Boolean.TRUE.equals(stack.get(DeadSimpleBagsComponents.OPEN));
@@ -86,7 +96,7 @@ public class BagItem extends Item implements PolymerItem {
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
+    public /*? =1.21.1 {*/ /*TypedActionResult<ItemStack> *//*?} else {*/ ActionResult /*?}*/ use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
         if (container == null) container = createDefaultContainerComponent(this.rows);
@@ -102,11 +112,11 @@ public class BagItem extends Item implements PolymerItem {
             user.openHandledScreen(new BagItemInventory(stack, rows));
         }
 
-        return ActionResult.SUCCESS;
+        return /*? =1.21.1 {*/ /*TypedActionResult.success(stack) *//*?} else {*/ ActionResult.SUCCESS /*?}*/;
     }
 
-    //? if =1.21.4 {
-    /*@Override
+    //? if <=1.21.4 {
+    @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         PickupMode pickupMode = stack.get(DeadSimpleBagsComponents.PICKUP_MODE);
         if (pickupMode == null) pickupMode = PickupMode.NONE;
@@ -114,8 +124,8 @@ public class BagItem extends Item implements PolymerItem {
         tooltip.add(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())).formatted(Formatting.GRAY));
         tooltip.add(Text.translatable("deadsimplebags.tooltip.cycle_pickup_mode").formatted(Formatting.DARK_GRAY));
     }
-    *///?} elif >=1.21.5 {
-    @Override
+    //?} elif >=1.21.5 {
+    /*@Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
         PickupMode pickupMode = stack.get(DeadSimpleBagsComponents.PICKUP_MODE);
         if (pickupMode == null) pickupMode = PickupMode.NONE;
@@ -123,7 +133,7 @@ public class BagItem extends Item implements PolymerItem {
         textConsumer.accept(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())).formatted(Formatting.GRAY));
         textConsumer.accept(Text.translatable("deadsimplebags.tooltip.cycle_pickup_mode").formatted(Formatting.DARK_GRAY));
     }
-    //?}
+    *///?}
 
     @Override
     public boolean canBeNested() {
