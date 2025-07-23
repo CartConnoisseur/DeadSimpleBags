@@ -28,7 +28,7 @@ public abstract class DeadSimpleBagsItems {
 
     private static Item register(String name, Function<Item.Settings, Item> factory, Item.Settings settings) {
         RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(DeadSimpleBags.MOD_ID, name));
-        Item item = factory.apply(/*? =1.21.1 {*/ /*settings *//*?} else {*/ settings.registryKey(key) /*?}*/);
+        Item item = factory.apply(/*? <=1.21.1 {*/ /*settings *//*?} else {*/ settings.registryKey(key) /*?}*/);
         Registry.register(Registries.ITEM, key, item);
 
         return item;
