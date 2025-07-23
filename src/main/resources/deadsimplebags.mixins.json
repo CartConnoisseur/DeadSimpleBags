@@ -4,7 +4,8 @@
   "package": "sh.cxl.deadsimplebags.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "PlayerItemPickupMixin"
+    "PlayerItemPickupMixin",
+    "UpgradeBagCraftMixin"
   ],
   "injectors": {
     "defaultRequire": 1
