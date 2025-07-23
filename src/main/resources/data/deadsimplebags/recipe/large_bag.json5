@@ -8,9 +8,9 @@
     "MMM"
   ],
   "key": {
-    "M": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "minecraft:gold_ingot" /*? if <=1.21.1 {*/ /*} *//*?}*/,
-    "C": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "minecraft:chest" /*? if <=1.21.1 {*/ /*} *//*?}*/,
-    "B": /*? if <=1.21.1 {*/ /*{ "item": *//*?}*/ "deadsimplebags:medium_bag", /*? if <=1.21.1 {*/ /*} *//*?}*/
+    "M": /*? if <1.21.2 {*/ /*{ "item": *//*?}*/ "minecraft:gold_ingot" /*? if <1.21.2 {*/ /*} *//*?}*/,
+    "C": /*? if <1.21.2 {*/ /*{ "item": *//*?}*/ "minecraft:chest" /*? if <1.21.2 {*/ /*} *//*?}*/,
+    "B": /*? if <1.21.2 {*/ /*{ "item": *//*?}*/ "deadsimplebags:medium_bag", /*? if <1.21.2 {*/ /*} *//*?}*/
   },
   "result": { "id": "deadsimplebags:large_bag" }
 }

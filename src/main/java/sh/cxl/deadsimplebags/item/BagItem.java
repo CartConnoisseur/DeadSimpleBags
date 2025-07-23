@@ -11,9 +11,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
-//? if <=1.21.1
+//? if <1.21.2
 /*import net.minecraft.registry.RegistryWrapper;*/
-//? if <=1.21.1
+//? if <1.21.2
 /*import net.minecraft.server.network.ServerPlayerEntity;*/
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
@@ -44,7 +44,7 @@ public class BagItem extends Item implements PolymerItem {
     }
 
     @Override
-    public Item getPolymerItem(ItemStack stack, /*? <=1.21.1 {*/ /*@Nullable ServerPlayerEntity serverPlayerEntity *//*?} else {*/ PacketContext context /*?}*/) {
+    public Item getPolymerItem(ItemStack stack, /*? <1.21.2 {*/ /*@Nullable ServerPlayerEntity serverPlayerEntity *//*?} else {*/ PacketContext context /*?}*/) {
         return Items.BUNDLE;
     }
 
@@ -56,7 +56,7 @@ public class BagItem extends Item implements PolymerItem {
     //?}
 
     @Override
-    //? if <=1.21.1 {
+    //? if <1.21.2 {
     /*public ItemStack getPolymerItemStack(ItemStack stack, TooltipType tooltipType, RegistryWrapper.WrapperLookup lookup, @Nullable ServerPlayerEntity player) {
         ItemStack polymerStack = PolymerItem.super.getPolymerItemStack(stack, tooltipType, lookup, player);
     *///?} else {
@@ -95,7 +95,7 @@ public class BagItem extends Item implements PolymerItem {
     }
 
     @Override
-    public /*? <=1.21.1 {*/ /*TypedActionResult<ItemStack> *//*?} else {*/ ActionResult /*?}*/ use(World world, PlayerEntity user, Hand hand) {
+    public /*? <1.21.2 {*/ /*TypedActionResult<ItemStack> *//*?} else {*/ ActionResult /*?}*/ use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
         if (container == null) container = createDefaultContainerComponent(this.rows);
@@ -111,10 +111,10 @@ public class BagItem extends Item implements PolymerItem {
             user.openHandledScreen(new BagItemInventory(stack, rows));
         }
 
-        return /*? <=1.21.1 {*/ /*TypedActionResult.success(stack) *//*?} else {*/ ActionResult.SUCCESS /*?}*/;
+        return /*? <1.21.2 {*/ /*TypedActionResult.success(stack) *//*?} else {*/ ActionResult.SUCCESS /*?}*/;
     }
 
-    //? if <=1.21.4 {
+    //? if <1.21.5 {
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         PickupMode pickupMode = stack.get(DeadSimpleBagsComponents.PICKUP_MODE);
@@ -123,7 +123,7 @@ public class BagItem extends Item implements PolymerItem {
         tooltip.add(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())).formatted(Formatting.GRAY));
         tooltip.add(Text.translatable("deadsimplebags.tooltip.cycle_pickup_mode").formatted(Formatting.DARK_GRAY));
     }
-    //?} elif >=1.21.5 {
+    //?} else {
     /*@Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
         PickupMode pickupMode = stack.get(DeadSimpleBagsComponents.PICKUP_MODE);

@@ -45,20 +45,13 @@ public class BagItemInventory implements NamedScreenHandlerFactory, Inventory {
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         ScreenHandlerType<?> type = switch (this.rows) {
-            case 1:
-                yield ScreenHandlerType.GENERIC_9X1;
-            case 2:
-                yield ScreenHandlerType.GENERIC_9X2;
-            case 3:
-                yield ScreenHandlerType.GENERIC_9X3;
-            case 4:
-                yield ScreenHandlerType.GENERIC_9X4;
-            case 5:
-                yield ScreenHandlerType.GENERIC_9X5;
-            case 6:
-                yield ScreenHandlerType.GENERIC_9X6;
-            default:
-                throw new IndexOutOfBoundsException();
+            case 1 -> ScreenHandlerType.GENERIC_9X1;
+            case 2 -> ScreenHandlerType.GENERIC_9X2;
+            case 3 -> ScreenHandlerType.GENERIC_9X3;
+            case 4 -> ScreenHandlerType.GENERIC_9X4;
+            case 5 -> ScreenHandlerType.GENERIC_9X5;
+            case 6 -> ScreenHandlerType.GENERIC_9X6;
+            default -> throw new IndexOutOfBoundsException();
         };
 
         return new ItemInventoryScreenHandler(type, syncId, playerInventory, this, this.rows);
