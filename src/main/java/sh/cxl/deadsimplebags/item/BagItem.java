@@ -4,6 +4,8 @@ import eu.pb4.polymer.core.api.item.PolymerItem;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.component.type.ContainerComponent;
+//? if >=1.21.5
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,6 +26,7 @@ import sh.cxl.deadsimplebags.screen.ItemInventoryScreenHandler;
 import xyz.nucleoid.packettweaker.PacketContext;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BagItem extends Item implements PolymerItem {
     private final int rows;
@@ -102,7 +105,8 @@ public class BagItem extends Item implements PolymerItem {
         return ActionResult.SUCCESS;
     }
 
-    @Override
+    //? if =1.21.4 {
+    /*@Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         PickupMode pickupMode = stack.get(DeadSimpleBagsComponents.PICKUP_MODE);
         if (pickupMode == null) pickupMode = PickupMode.NONE;
@@ -110,6 +114,16 @@ public class BagItem extends Item implements PolymerItem {
         tooltip.add(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())).formatted(Formatting.GRAY));
         tooltip.add(Text.translatable("deadsimplebags.tooltip.cycle_pickup_mode").formatted(Formatting.DARK_GRAY));
     }
+    *///?} elif >=1.21.5 {
+    @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
+        PickupMode pickupMode = stack.get(DeadSimpleBagsComponents.PICKUP_MODE);
+        if (pickupMode == null) pickupMode = PickupMode.NONE;
+
+        textConsumer.accept(Text.translatable("deadsimplebags.pickup_mode", Text.translatable("deadsimplebags.pickup_mode." + pickupMode.asString().toLowerCase())).formatted(Formatting.GRAY));
+        textConsumer.accept(Text.translatable("deadsimplebags.tooltip.cycle_pickup_mode").formatted(Formatting.DARK_GRAY));
+    }
+    //?}
 
     @Override
     public boolean canBeNested() {

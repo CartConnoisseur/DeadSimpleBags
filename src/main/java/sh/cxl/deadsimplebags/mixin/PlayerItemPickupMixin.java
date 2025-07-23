@@ -18,9 +18,9 @@ public abstract class PlayerItemPickupMixin {
     private boolean insertStack(PlayerInventory inventory, ItemStack stack) {
         ArrayList<ItemStack> bags = new ArrayList<>();
 
-        for (int i = 0; i < inventory.main.size(); i++) {
-            if (inventory.main.get(i).getItem() instanceof BagItem) {
-                bags.add(inventory.main.get(i));
+        for (ItemStack invStack : /*? =1.21.4 {*/ /*inventory.main *//*?} else {*/ inventory.getMainStacks() /*?}*/) {
+            if (invStack.getItem() instanceof BagItem) {
+                bags.add(invStack);
             }
         }
 
