@@ -51,7 +51,8 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
-                "minecraft_version": stonecutter.current.project,
+                "minecraft_version_min": stonecutter.current.project,
+                "minecraft_version_max": project.minecraft_version_max,
                 "loader_version": project.loader_version
     }
 }
