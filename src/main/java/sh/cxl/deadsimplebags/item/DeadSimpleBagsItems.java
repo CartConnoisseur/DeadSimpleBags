@@ -18,6 +18,8 @@ public abstract class DeadSimpleBagsItems {
     public static final Item HUGE_BAG = registerBagItem("huge_bag", 5);
     public static final Item MASSIVE_BAG = registerBagItem("massive_bag", 6);
 
+    public static final Item DUMMY = register("dummy", DummyItem::new, new Item.Settings());
+
     public static void register() {
         DeadSimpleBags.LOGGER.info("Registering {} items", DeadSimpleBags.MOD_ID);
     }

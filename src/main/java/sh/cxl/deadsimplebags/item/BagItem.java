@@ -15,6 +15,8 @@ import net.minecraft.item.tooltip.TooltipType;
 /*import net.minecraft.registry.RegistryWrapper;*/
 //? if <1.21.2
 /*import net.minecraft.server.network.ServerPlayerEntity;*/
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.DefaultedList;
@@ -75,13 +77,17 @@ public class BagItem extends Item implements PolymerItem {
             if (!s.isEmpty()) filled += (double) s.getCount() / s.getMaxCount();
         }
 
-        if (open) {
+
+        //? if <1.21.2 {
+        /*if (open) {
             polymerStack.set(DataComponentTypes.BUNDLE_CONTENTS, new BundleContentsComponent(DefaultedList.ofSize(0)));
-        } else {
-            ItemStack bundleStack = Items.DRAGON_EGG.getDefaultStack();
-            bundleStack.setCount(Math.clamp((long) filled * bundleStack.getMaxCount() / (this.rows * 9L), 1, bundleStack.getMaxCount()));
-            polymerStack.set(DataComponentTypes.BUNDLE_CONTENTS, new BundleContentsComponent(DefaultedList.ofSize(1, bundleStack)));
+            return polymerStack;
         }
+        *///?}
+
+        ItemStack bundleStack = DeadSimpleBagsItems.DUMMY.getDefaultStack();
+        bundleStack.setCount(Math.clamp((long) filled * bundleStack.getMaxCount() / (this.rows * 9L), 1, bundleStack.getMaxCount()));
+        polymerStack.set(DataComponentTypes.BUNDLE_CONTENTS, new BundleContentsComponent(DefaultedList.ofSize(1, bundleStack)));
 
         return polymerStack;
     }
@@ -109,6 +115,9 @@ public class BagItem extends Item implements PolymerItem {
         } else {
             stack.set(DeadSimpleBagsComponents.OPEN, true);
             user.openHandledScreen(new BagItemInventory(stack, rows));
+
+            //? if >=1.21.2
+            world.playSound(null, user.getBlockPos(), SoundEvents.ITEM_BUNDLE_DROP_CONTENTS, SoundCategory.PLAYERS, 0.8F, 0.8F + user.getWorld().getRandom().nextFloat() * 0.4F);
         }
 
         return /*? <1.21.2 {*/ /*TypedActionResult.success(stack) *//*?} else {*/ ActionResult.SUCCESS /*?}*/;
