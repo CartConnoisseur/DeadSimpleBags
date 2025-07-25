@@ -1,6 +1,8 @@
 package sh.cxl.deadsimplebags.item;
 
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -22,6 +24,15 @@ public abstract class DeadSimpleBagsItems {
 
     public static void register() {
         DeadSimpleBags.LOGGER.info("Registering {} items", DeadSimpleBags.MOD_ID);
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(group -> {
+            group.add(TINY_BAG);
+            group.add(SMALL_BAG);
+            group.add(MEDIUM_BAG);
+            group.add(LARGE_BAG);
+            group.add(HUGE_BAG);
+            group.add(MASSIVE_BAG);
+        });
     }
 
     private static Item registerBagItem(String name, int rows) {
