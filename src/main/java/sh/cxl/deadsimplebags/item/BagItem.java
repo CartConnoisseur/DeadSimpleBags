@@ -1,6 +1,8 @@
 package sh.cxl.deadsimplebags.item;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
+//? if >=1.21.5
+import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.component.type.ContainerComponent;
@@ -28,7 +30,12 @@ import sh.cxl.deadsimplebags.component.DeadSimpleBagsComponents;
 import sh.cxl.deadsimplebags.screen.ItemInventoryScreenHandler;
 import xyz.nucleoid.packettweaker.PacketContext;
 
-import java.util.List;
+//? if <1.21.5
+/*import java.util.List;*/
+//? if >=1.21.5
+import java.util.LinkedHashSet;
+//? if >=1.21.5
+import java.util.SequencedSet;
 //? if >=1.21.5
 import java.util.function.Consumer;
 
@@ -77,6 +84,11 @@ public class BagItem extends Item implements PolymerItem {
             if (!s.isEmpty()) filled += (double) s.getCount() / s.getMaxCount();
         }
 
+        //? if >=1.21.5 {
+        SequencedSet<ComponentType<?>> hiddenTooltips = new LinkedHashSet<>();
+        hiddenTooltips.add(DataComponentTypes.BUNDLE_CONTENTS);
+        polymerStack.set(DataComponentTypes.TOOLTIP_DISPLAY, new TooltipDisplayComponent(false, hiddenTooltips));
+        //?}
 
         //? if <1.21.2 {
         /*if (open) {
