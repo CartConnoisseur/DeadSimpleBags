@@ -4,8 +4,21 @@
   "version": "${version}",
   "name": "DeadSimpleBags",
   "description": "",
-  "authors": [],
-  "contact": {},
+  "authors": [{
+    "name": "Caroline Larimore",
+    "contact": {
+      "email": "caroline@larimo.re",
+      "homepage": "https://caroline.larimo.re",
+      "github": "https://github.com/CartConnoisseur",
+      "modrinth": "https://modrinth.com/user/c",
+      "discord": "@mishandle"
+    }
+  }],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/dead-simple-bags",
+    "sources": "https://github.com/CartConnoisseur/DeadSimpleBags",
+    "issues": "https://github.com/CartConnoisseur/DeadSimpleBags/issues"
+  },
   "license": "MIT",
   "icon": "assets/deadsimplebags/icon.png",
   "environment": "server",
